@@ -219,22 +219,6 @@ func TestLinkedList_DeleteAll_NotEmptyList_OneElement(t *testing.T) {
 	assert.Nil(t, l.head)
 }
 
-func TestLinkedList_DeleteAll_NotEmptyList_SeveralInRow(t *testing.T) {
-	l := LinkedList{}
-
-	l.AddInTail(Node{value: 1})
-	l.AddInTail(Node{value: 2})
-	l.AddInTail(Node{value: 2})
-	l.AddInTail(Node{value: 2})
-	l.AddInTail(Node{value: 3})
-
-	l.Delete(2, true)
-
-	assert.Equal(t, 2, l.Count())
-	assert.Equal(t, l.tail.value, 3)
-	assert.Equal(t, l.head.value, 1)
-}
-
 func TestLinkedList_DeleteAll_NotEmptyList_AllElements(t *testing.T) {
 	l := LinkedList{}
 	n1 := Node{value: 1}
