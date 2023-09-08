@@ -101,17 +101,6 @@ func (l *LinkedList) Delete(n int, all bool) {
 
 }
 
-func (l *LinkedList) deleteHead(n int) {
-	for l.head != nil && l.head.value == n {
-		l.head = l.head.next
-	}
-
-	if l.head == l.tail && l.head.value == n || l.head == nil {
-		l.head = nil
-		l.tail = nil
-	}
-}
-
 func (l *LinkedList) Insert(after *Node, add Node) {
 	node := l.head
 	for node != nil {
