@@ -82,7 +82,7 @@ func (l *LinkedList) Delete(n int, all bool) {
 		return
 	}
 
-	for node := l.head; node != nil && node.next != nil; node = node.next {
+	for node := l.head; node != nil && node.next != nil; {
 		if node.next.value == n {
 			if node.next == l.tail {
 				l.tail = node
@@ -92,19 +92,21 @@ func (l *LinkedList) Delete(n int, all bool) {
 			if !all {
 				return
 			}
+		} else {
+			node = node.next
 		}
 	}
+
 }
 
-func (l *LinkedList) deleteHead(n int, all bool) {
+func (l *LinkedList) deleteHead(n int) {
 	for l.head != nil && l.head.value == n {
 		l.head = l.head.next
-		if !all {
-			if l.head == nil {
-				l.tail = nil
-			}
-			return
-		}
+	}
+
+	if l.head == l.tail && l.head.value == n || l.head == nil {
+		l.head = nil
+		l.tail = nil
 	}
 }
 

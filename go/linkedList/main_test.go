@@ -139,6 +139,8 @@ func TestLinkedList_DeleteFirst_EmptyList(t *testing.T) {
 	l.Delete(2, false)
 
 	assert.Equal(t, 0, l.Count())
+	assert.Nil(t, l.head)
+	assert.Nil(t, l.tail)
 }
 
 func TestLinkedList_DeleteFirst_OneElement(t *testing.T) {
@@ -200,12 +202,46 @@ func TestLinkedList_DeleteAll_EmptyList(t *testing.T) {
 	l.Delete(2, true)
 
 	assert.Equal(t, 0, l.Count())
+	assert.Nil(t, l.tail)
+	assert.Nil(t, l.head)
 }
 
 func TestLinkedList_DeleteAll_NotEmptyList_OneElement(t *testing.T) {
 	l := LinkedList{}
 	n1 := Node{value: 1}
 
+	l.AddInTail(n1)
+
+	l.Delete(1, true)
+
+	assert.Equal(t, 0, l.Count())
+	assert.Nil(t, l.tail)
+	assert.Nil(t, l.head)
+}
+
+func TestLinkedList_DeleteAll_NotEmptyList_SeveralInRow(t *testing.T) {
+	l := LinkedList{}
+
+	l.AddInTail(Node{value: 1})
+	l.AddInTail(Node{value: 2})
+	l.AddInTail(Node{value: 2})
+	l.AddInTail(Node{value: 2})
+	l.AddInTail(Node{value: 3})
+
+	l.Delete(2, true)
+
+	assert.Equal(t, 2, l.Count())
+	assert.Equal(t, l.tail.value, 3)
+	assert.Equal(t, l.head.value, 1)
+}
+
+func TestLinkedList_DeleteAll_NotEmptyList_AllElements(t *testing.T) {
+	l := LinkedList{}
+	n1 := Node{value: 1}
+
+	l.AddInTail(n1)
+	l.AddInTail(n1)
+	l.AddInTail(n1)
 	l.AddInTail(n1)
 
 	l.Delete(1, true)
