@@ -24,8 +24,7 @@ func NewDummyList() *DummyLinkedList2 {
 		},
 	}
 
-	l.head.next = l.tail
-	l.tail.prev = l.head
+	l.Clean()
 	return l
 }
 
