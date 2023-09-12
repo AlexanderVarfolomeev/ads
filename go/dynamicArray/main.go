@@ -35,7 +35,7 @@ func (da *DynArray[T]) MakeArray(sz int) {
 	}
 
 	da.capacity = sz
-	da.array = arr //
+	da.array = arr
 }
 
 func (da *DynArray[T]) Insert(itm T, index int) error {
@@ -43,6 +43,10 @@ func (da *DynArray[T]) Insert(itm T, index int) error {
 		return fmt.Errorf("bad index '%d'", index)
 	}
 
+	if index == da.count {
+		da.Append(itm)
+		return nil
+	}
 	if da.capacity == da.count {
 		da.MakeArray(da.capacity * increaseArraySize)
 	}
