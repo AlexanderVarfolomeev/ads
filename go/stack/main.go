@@ -1,6 +1,11 @@
 package main
 
-import "errors"
+
+import (
+	"os"
+	"errors"
+)
+
 
 type Node[T any] struct {
 	next  *Node[T]
