@@ -12,30 +12,27 @@ func CalculatePostfix(expression string) (int, error) {
 
 	for s1.Size() != 0 {
 		val, _ := s1.Pop()
+
+		if isBinaryOperation(val) && s2.Size() < 2 {
+			return 0, errors.New("incorrect expression")
+		}
+
 		switch val {
 		case "=":
 			res, err := s2.Pop()
-			if err != nil {
-				return 0, errors.New("incorrect expression")
-			}
-
-			if s2.Size() != 0 {
+			if err != nil || s2.Size() != 0 {
 				return 0, errors.New("incorrect expression")
 			}
 
 			return res, nil
 		case "+":
-			val1, val2, err := popTwoValues(&s2)
-			if err != nil {
-				return 0, errors.New("incorrect expression")
-			}
+			val1, _ := s2.Pop()
+			val2, _ := s2.Pop()
 
 			s2.Push(val1 + val2)
 		case "*":
-			val1, val2, err := popTwoValues(&s2)
-			if err != nil {
-				return 0, errors.New("incorrect expression")
-			}
+			val1, _ := s2.Pop()
+			val2, _ := s2.Pop()
 
 			s2.Push(val1 * val2)
 		default:
@@ -50,17 +47,8 @@ func CalculatePostfix(expression string) (int, error) {
 	return 0, errors.New("incorrect expression")
 }
 
-func popTwoValues(s *Stack[int]) (int, int, error) {
-	val1, err := s.Pop()
-	if err != nil {
-		return 0, 0, errors.New("incorrect expression")
-	}
-	val2, err := s.Pop()
-	if err != nil {
-		return 0, 0, errors.New("incorrect expression")
-	}
-
-	return val1, val2, nil
+func isBinaryOperation(op string) bool {
+	return op == "+" || op == "*"
 }
 
 func stringToStack(expression string) Stack[string] {
