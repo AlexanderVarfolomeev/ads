@@ -14,17 +14,38 @@ func CalculatePostfix(expression string) (int, error) {
 		val, _ := s1.Pop()
 		switch val {
 		case "=":
-			return calculateEqual(&s2)
+			res, err := s2.Pop()
+			if err != nil {
+				return 0, errors.New("incorrect expression")
+			}
+
+			if s2.Size() != 0 {
+				return 0, errors.New("incorrect expression")
+			}
+
+			return res, nil
 		case "+":
-			err := calculatePlus(&s2)
+			val1, err := s2.Pop()
 			if err != nil {
 				return 0, errors.New("incorrect expression")
 			}
+			val2, err := s2.Pop()
+			if err != nil {
+				return 0, errors.New("incorrect expression")
+			}
+
+			s2.Push(val1 + val2)
 		case "*":
-			err := calculateMultiply(&s2)
+			val1, err := s2.Pop()
 			if err != nil {
 				return 0, errors.New("incorrect expression")
 			}
+			val2, err := s2.Pop()
+			if err != nil {
+				return 0, errors.New("incorrect expression")
+			}
+
+			s2.Push(val1 * val2)
 		default:
 			num, err := strconv.Atoi(val)
 			if err != nil {
@@ -46,45 +67,4 @@ func stringToStack(expression string) Stack[string] {
 	}
 
 	return s1
-}
-
-func calculateEqual(s2 *Stack[int]) (int, error) {
-	res, err := s2.Pop()
-	if err != nil {
-		return 0, errors.New("incorrect expression")
-	}
-
-	if s2.Size() != 0 {
-		return 0, errors.New("incorrect expression")
-	}
-
-	return res, nil
-}
-
-func calculatePlus(s2 *Stack[int]) error {
-	val1, err := s2.Pop()
-	if err != nil {
-		return errors.New("incorrect expression")
-	}
-	val2, err := s2.Pop()
-	if err != nil {
-		return errors.New("incorrect expression")
-	}
-
-	s2.Push(val1 + val2)
-	return nil
-}
-
-func calculateMultiply(s2 *Stack[int]) error {
-	val1, err := s2.Pop()
-	if err != nil {
-		return errors.New("incorrect expression")
-	}
-	val2, err := s2.Pop()
-	if err != nil {
-		return errors.New("incorrect expression")
-	}
-
-	s2.Push(val1 * val2)
-	return nil
 }
