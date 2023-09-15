@@ -25,22 +25,14 @@ func CalculatePostfix(expression string) (int, error) {
 
 			return res, nil
 		case "+":
-			val1, err := s2.Pop()
-			if err != nil {
-				return 0, errors.New("incorrect expression")
-			}
-			val2, err := s2.Pop()
+			val1, val2, err := popTwoValues(&s2)
 			if err != nil {
 				return 0, errors.New("incorrect expression")
 			}
 
 			s2.Push(val1 + val2)
 		case "*":
-			val1, err := s2.Pop()
-			if err != nil {
-				return 0, errors.New("incorrect expression")
-			}
-			val2, err := s2.Pop()
+			val1, val2, err := popTwoValues(&s2)
 			if err != nil {
 				return 0, errors.New("incorrect expression")
 			}
@@ -56,6 +48,19 @@ func CalculatePostfix(expression string) (int, error) {
 	}
 
 	return 0, errors.New("incorrect expression")
+}
+
+func popTwoValues(s *Stack[int]) (int, int, error) {
+	val1, err := s.Pop()
+	if err != nil {
+		return 0, 0, errors.New("incorrect expression")
+	}
+	val2, err := s.Pop()
+	if err != nil {
+		return 0, 0, errors.New("incorrect expression")
+	}
+
+	return val1, val2, nil
 }
 
 func stringToStack(expression string) Stack[string] {
