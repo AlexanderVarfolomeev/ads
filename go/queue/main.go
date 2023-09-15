@@ -2,10 +2,10 @@ package main
 
 import "errors"
 
-//import (
-//	// "os"
-//	//	"fmt" включите если используете
-//)
+import (
+	"os"
+//	"fmt" включите если используете
+)
 
 type Node[T any] struct {
 	next  *Node[T]
