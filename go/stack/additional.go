@@ -6,15 +6,23 @@ import (
 	"strings"
 )
 
-func CalculatePostfix(expression string) (int, error) {
+func CalculatePostfix(expression string) (float64, error) {
 	s1 := stringToStack(expression)
-	s2 := Stack[int]{}
+	s2 := Stack[float64]{}
 
 	for s1.Size() != 0 {
 		val, _ := s1.Pop()
 
-		if isBinaryOperation(val) && s2.Size() < 2 {
+		isBinaryOp := isBinaryOperation(val)
+		var val1, val2 float64
+
+		if isBinaryOp && s2.Size() < 2 {
 			return 0, errors.New("incorrect expression")
+		}
+
+		if isBinaryOp {
+			val1, _ = s2.Pop()
+			val2, _ = s2.Pop()
 		}
 
 		switch val {
@@ -23,20 +31,17 @@ func CalculatePostfix(expression string) (int, error) {
 			if err != nil || s2.Size() != 0 {
 				return 0, errors.New("incorrect expression")
 			}
-
 			return res, nil
 		case "+":
-			val1, _ := s2.Pop()
-			val2, _ := s2.Pop()
-
 			s2.Push(val1 + val2)
 		case "*":
-			val1, _ := s2.Pop()
-			val2, _ := s2.Pop()
-
 			s2.Push(val1 * val2)
+		case "/":
+			s2.Push(val2 / val1)
+		case "-":
+			s2.Push(val2 - val1)
 		default:
-			num, err := strconv.Atoi(val)
+			num, err := strconv.ParseFloat(val, 32)
 			if err != nil {
 				return num, errors.New("incorrect expression")
 			}
@@ -48,7 +53,7 @@ func CalculatePostfix(expression string) (int, error) {
 }
 
 func isBinaryOperation(op string) bool {
-	return op == "+" || op == "*"
+	return op == "+" || op == "-" || op == "*" || op == "/"
 }
 
 func stringToStack(expression string) Stack[string] {
