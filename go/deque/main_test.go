@@ -73,6 +73,8 @@ func TestDeque_RemoveFront(t *testing.T) {
 		assert.Equal(t, i, front)
 	}
 
+	assert.Nil(t, d.tail)
+	assert.Nil(t, d.tail)
 	assert.Equal(t, 0, d.Size())
 }
 
@@ -91,5 +93,7 @@ func TestDeque_RemoveTail(t *testing.T) {
 		assert.Equal(t, i, tail)
 	}
 
+	assert.Nil(t, d.tail)
+	assert.Nil(t, d.tail)
 	assert.Equal(t, 0, d.Size())
 }

@@ -66,6 +66,8 @@ func (d *Deque[T]) RemoveFront() (T, error) {
 
 	if d.head != nil {
 		d.head.prev = nil
+	} else {
+		d.tail = nil
 	}
 
 	d.size--
@@ -85,6 +87,8 @@ func (d *Deque[T]) RemoveTail() (T, error) {
 
 	if d.tail != nil {
 		d.tail.next = nil
+	} else {
+		d.head = nil
 	}
 
 	d.size--
