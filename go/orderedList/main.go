@@ -27,43 +27,9 @@ func (l *OrderedList[T]) Count() int {
 }
 
 func (l *OrderedList[T]) Add(item T) {
-	newNode := Node[T]{value: item}
-	if l.head == nil {
-		l.head = &newNode
-		l.tail = &newNode
-		return
-	}
-
-	n := l.head
-	for n != nil {
-		if l.Compare(n.value, item) >= 0 {
-
-			if n == l.head {
-				newNode.next = l.head
-				l.head.prev = &newNode
-				l.head = &newNode
-			} else {
-				newNode.prev = n.prev
-				n.prev = &newNode
-
-				n.prev.next = &newNode
-				newNode.next = n
-			}
-			return
-		}
-		n = n.next
-	}
-
-	newNode.prev = l.tail
-	l.tail.next = &newNode
-	l.tail = &newNode
-
 	l.count++
-
-}
-
-func (l *OrderedList[T]) addAscending(item T) {
 	newNode := Node[T]{value: item}
+
 	if l.head == nil {
 		l.head = &newNode
 		l.tail = &newNode
@@ -72,19 +38,11 @@ func (l *OrderedList[T]) addAscending(item T) {
 
 	n := l.head
 	for n != nil {
-		if l.Compare(n.value, item) >= 0 {
-
-			if n == l.head {
-				newNode.next = l.head
-				l.head.prev = &newNode
-				l.head = &newNode
-			} else {
-				newNode.prev = n.prev
-				n.prev = &newNode
-
-				n.prev.next = &newNode
-				newNode.next = n
-			}
+		if l._ascending && l.Compare(n.value, item) >= 0 {
+			l.addToMiddle(n, &newNode)
+			return
+		} else if !l._ascending && l.Compare(n.value, item) < 0 {
+			l.addToMiddle(n, &newNode)
 			return
 		}
 		n = n.next
@@ -95,69 +53,30 @@ func (l *OrderedList[T]) addAscending(item T) {
 	l.tail = &newNode
 }
 
-func (l *OrderedList[T]) addDescending(item T) {
-	newNode := Node[T]{value: item}
-	if l.head == nil {
-		l.head = &newNode
-		l.tail = &newNode
-		return
+func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) bool {
+	if n == l.head {
+		newNode.next = l.head
+		l.head.prev = newNode
+		l.head = newNode
+	} else {
+		newNode.prev = n.prev
+		n.prev = newNode
+
+		n.prev.next = newNode
+		newNode.next = n
 	}
-
-	n := l.head
-	for n != nil {
-		if l.Compare(n.value, item) < 0 {
-
-			if n == l.head {
-				newNode.next = l.head
-				l.head.prev = &newNode
-				l.head = &newNode
-			} else {
-				newNode.prev = n.prev
-				n.prev = &newNode
-
-				n.prev.next = &newNode
-				newNode.next = n
-			}
-			return
-		}
-		n = n.next
-	}
-
-	newNode.prev = l.tail
-	l.tail.next = &newNode
-	l.tail = &newNode
+	return true
 }
 
 func (l *OrderedList[T]) Find(n T) (Node[T], error) {
-	if l._ascending {
-		return l.findAscending(n)
-	}
-	return l.findDescending(n)
-}
-
-func (l *OrderedList[T]) findAscending(n T) (Node[T], error) {
 	node := l.head
 
 	for node != nil {
-		if l.Compare(node.value, n) > 0 {
+		if l._ascending && l.Compare(node.value, n) > 0 {
 			return Node[T]{value: n, next: nil, prev: nil}, errors.New("node not found")
 		}
 
-		if l.Compare(node.value, n) == 0 {
-			return *node, nil
-		}
-
-		node = node.next
-	}
-
-	return Node[T]{value: n, next: nil, prev: nil}, errors.New("node not found")
-}
-
-func (l *OrderedList[T]) findDescending(n T) (Node[T], error) {
-	node := l.head
-
-	for node != nil {
-		if l.Compare(node.value, n) < 0 {
+		if !l._ascending && l.Compare(node.value, n) < 0 {
 			return Node[T]{value: n, next: nil, prev: nil}, errors.New("node not found")
 		}
 
@@ -176,32 +95,31 @@ func (l *OrderedList[T]) Delete(n T) {
 	l.count--
 
 	for node != nil {
-		if l.Compare(node.value, n) == 0 {
-
-			if node == l.head {
-				l.head = l.head.next
-				if l.head != nil {
-					l.head.prev = nil
-				}
-			} else {
-				node.prev.next = node.next
-
-				if node.next != nil {
-					node.next.prev = node.prev
-				} else {
-					l.tail = node.prev
-				}
-			}
-
-			if l.head == nil {
-				l.tail = nil
-			}
-			return
+		if l.Compare(node.value, n) != 0 {
+			node = node.next
+			continue
 		}
 
-		node = node.next
-	}
+		if node == l.head {
+			l.head = l.head.next
+		}
 
+		if node.prev != nil {
+			node.prev.next = node.next
+		}
+
+		if node.next != nil {
+			node.next.prev = node.prev
+		} else {
+			l.tail = node.prev
+		}
+
+		if l.head == nil {
+			l.tail = nil
+		}
+
+		return
+	}
 }
 
 func (l *OrderedList[T]) Clear(asc bool) {
