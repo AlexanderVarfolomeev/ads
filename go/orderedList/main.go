@@ -1,7 +1,8 @@
 package main
 
 import (
-	"asd/orderedList/constraints"
+	"constraints"
+	"os"
 	"errors"
 	"strings"
 )
