@@ -192,3 +192,74 @@ func TestOrderedList_Delete_Descending_Int(t *testing.T) {
 	assert.Nil(t, l.head)
 	assert.Nil(t, l.tail)
 }
+
+func Test_Add_Ordered_String(t *testing.T) {
+	list := &OrderedList[string]{_ascending: true}
+
+	list.Add("apple")
+	list.Add("banana")
+	list.Add("apple")
+
+	assert.Equal(t, 3, list.Count())
+
+	firstNode := list.head
+	secondNode := firstNode.next
+	thirdNode := secondNode.next
+
+	assert.NotNil(t, firstNode)
+	assert.NotNil(t, secondNode)
+	assert.NotNil(t, thirdNode)
+	assert.Nil(t, thirdNode.next)
+
+	assert.Equal(t, "apple", firstNode.value)
+	assert.Equal(t, "apple", secondNode.value)
+	assert.Equal(t, "banana", thirdNode.value)
+	assert.True(t, firstNode.next == secondNode)
+	assert.True(t, secondNode.prev == firstNode)
+	assert.True(t, secondNode.next == thirdNode)
+	assert.True(t, thirdNode.prev == secondNode)
+}
+
+func Test_Add_Desc_String(t *testing.T) {
+	list := &OrderedList[string]{_ascending: true}
+
+	list.Add("cherry")
+	list.Add("banana")
+	list.Add("apple")
+
+	assert.Equal(t, 3, list.Count())
+
+	firstNode := list.head
+	secondNode := firstNode.next
+	thirdNode := secondNode.next
+
+	assert.NotNil(t, firstNode)
+	assert.NotNil(t, secondNode)
+	assert.NotNil(t, thirdNode)
+	assert.Nil(t, thirdNode.next)
+
+	assert.Equal(t, "apple", firstNode.value)
+	assert.Equal(t, "banana", secondNode.value)
+	assert.Equal(t, "cherry", thirdNode.value)
+}
+
+func Test_Add_WithSpaces(t *testing.T) {
+	list := &OrderedList[string]{_ascending: true}
+
+	list.Add(" banana ")
+	list.Add("apple")
+	list.Add(" cherry ")
+
+	firstNode := list.head
+	secondNode := firstNode.next
+	thirdNode := secondNode.next
+
+	assert.NotNil(t, firstNode)
+	assert.NotNil(t, secondNode)
+	assert.NotNil(t, thirdNode)
+	assert.Nil(t, thirdNode.next)
+
+	assert.Equal(t, "apple", firstNode.value)
+	assert.Equal(t, " banana ", secondNode.value)
+	assert.Equal(t, " cherry ", thirdNode.value)
+}

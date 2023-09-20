@@ -3,6 +3,7 @@ package main
 import (
 	"asd/orderedList/constraints"
 	"errors"
+	"strings"
 )
 
 type Node[T constraints.Ordered] struct {
@@ -118,11 +119,33 @@ func (l *OrderedList[T]) Clear(asc bool) {
 }
 
 func (l *OrderedList[T]) Compare(v1 T, v2 T) int {
+	val1 := interface{}(v1)
+	val2 := interface{}(v2)
+
+	s1, ok1 := val1.(string)
+	s2, ok2 := val2.(string)
+
+	if ok1 && ok2 {
+		return l.CompareStrings(s1, s2)
+	}
+
 	if v1 < v2 {
 		return -1
 	}
 	if v1 > v2 {
 		return +1
+	}
+	return 0
+}
+
+func (l *OrderedList[T]) CompareStrings(s1, s2 string) int {
+	s1 = strings.TrimSpace(s1)
+	s2 = strings.TrimSpace(s2)
+	if s1 < s2 {
+		return -1
+	}
+	if s1 > s2 {
+		return 1
 	}
 	return 0
 }
