@@ -5,9 +5,6 @@ import (
 	"os"
 )
 
-func main() {
-}
-
 type Node[T constraints.Ordered] struct {
 	prev  *Node[T]
 	next  *Node[T]
