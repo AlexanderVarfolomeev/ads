@@ -53,19 +53,18 @@ func (l *OrderedList[T]) Add(item T) {
 	l.tail = &newNode
 }
 
-func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) bool {
+func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) {
 	if n == l.head {
 		newNode.next = l.head
 		l.head.prev = newNode
 		l.head = newNode
 	} else {
 		newNode.prev = n.prev
+		n.prev.next = newNode
 		n.prev = newNode
 
-		n.prev.next = newNode
 		newNode.next = n
 	}
-	return true
 }
 
 func (l *OrderedList[T]) Find(n T) (Node[T], error) {
@@ -124,6 +123,7 @@ func (l *OrderedList[T]) Delete(n T) {
 
 func (l *OrderedList[T]) Clear(asc bool) {
 	l._ascending = asc
+	l.count = 0
 	l.head, l.tail = nil, nil
 }
 

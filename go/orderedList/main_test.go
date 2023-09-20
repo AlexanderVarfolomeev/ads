@@ -36,6 +36,23 @@ func TestOrderedList_Add_Ascending_Int(t *testing.T) {
 	}
 }
 
+func TestOrderedList_Add_Ascending_Int_ToMiddle(t *testing.T) {
+	l := OrderedList[int]{_ascending: true}
+
+	l.Add(1)
+	l.Add(2)
+	l.Add(4)
+	l.Add(5)
+	l.Add(3)
+
+	for i := 1; i <= 5; i++ {
+		find, err := l.Find(i)
+		assert.NoError(t, err)
+		assert.Equal(t, i, find.value)
+	}
+
+}
+
 func TestOrderedList_Add_Descending_Int(t *testing.T) {
 	l := OrderedList[int]{_ascending: false}
 
