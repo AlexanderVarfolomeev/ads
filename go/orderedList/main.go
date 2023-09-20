@@ -1,7 +1,7 @@
 package main
 
 import (
-	"constraints"
+	"asd/orderedList/constraints"
 	"errors"
 )
 
@@ -54,9 +54,9 @@ func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) bool {
 		l.head = newNode
 	} else {
 		newNode.prev = n.prev
+		n.prev.next = newNode
 		n.prev = newNode
 
-		n.prev.next = newNode
 		newNode.next = n
 	}
 	return true
