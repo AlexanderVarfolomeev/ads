@@ -36,6 +36,54 @@ func TestOrderedList_Add_Ascending_Int(t *testing.T) {
 	}
 }
 
+func TestOrderedList_Add_Ascending_Int_Same(t *testing.T) {
+
+	l2 := OrderedList[int]{_ascending: true}
+
+	for i := 100; i >= 0; i-- {
+		l2.Add(100)
+	}
+
+	n2 := l2.head
+	for i := 0; i < 100; i++ {
+		assert.NotNil(t, n2)
+		assert.Equal(t, 100, n2.value)
+
+		n2 = n2.next
+	}
+}
+
+func TestOrderedList_Add_Ascending_Float(t *testing.T) {
+	l := OrderedList[float64]{_ascending: true}
+
+	for i := 0; i < 100; i++ {
+		l.Add(float64(i) - 0.5)
+	}
+
+	n := l.head
+	for i := 0; i < 100; i++ {
+		assert.NotNil(t, n)
+		assert.Equal(t, float64(i)-0.5, n.value)
+
+		n = n.next
+	}
+	assert.Equal(t, 100, l.Count())
+
+	l2 := OrderedList[float64]{_ascending: true}
+
+	for i := 100; i >= 0; i-- {
+		l2.Add(float64(i) - 0.5)
+	}
+
+	n2 := l2.head
+	for i := 0; i < 100; i++ {
+		assert.NotNil(t, n2)
+		assert.Equal(t, float64(i)-0.5, n2.value)
+
+		n2 = n2.next
+	}
+}
+
 func TestOrderedList_Add_Ascending_Int_ToMiddle(t *testing.T) {
 	l := OrderedList[int]{_ascending: true}
 
