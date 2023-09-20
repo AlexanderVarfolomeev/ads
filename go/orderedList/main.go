@@ -2,7 +2,7 @@ package main
 
 import (
 	"constraints"
-	"errors"
+	"os"
 )
 
 type Node[T constraints.Ordered] struct {
@@ -35,7 +35,10 @@ func (l *OrderedList[T]) Add(item T) {
 
 	n := l.head
 	for n != nil {
-		if (l._ascending && l.Compare(n.value, item) >= 0) || (!l._ascending && l.Compare(n.value, item) < 0) {
+		if l._ascending && l.Compare(n.value, item) >= 0 {
+			l.addToMiddle(n, &newNode)
+			return
+		} else if !l._ascending && l.Compare(n.value, item) < 0 {
 			l.addToMiddle(n, &newNode)
 			return
 		}
@@ -47,25 +50,30 @@ func (l *OrderedList[T]) Add(item T) {
 	l.tail = &newNode
 }
 
-func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) {
+func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) bool {
 	if n == l.head {
 		newNode.next = l.head
 		l.head.prev = newNode
 		l.head = newNode
 	} else {
 		newNode.prev = n.prev
-		n.prev.next = newNode
 		n.prev = newNode
 
+		n.prev.next = newNode
 		newNode.next = n
 	}
+	return true
 }
 
 func (l *OrderedList[T]) Find(n T) (Node[T], error) {
 	node := l.head
 
 	for node != nil {
-		if (l._ascending && l.Compare(node.value, n) > 0) || (!l._ascending && l.Compare(node.value, n) < 0) {
+		if l._ascending && l.Compare(node.value, n) > 0 {
+			return Node[T]{value: n, next: nil, prev: nil}, errors.New("node not found")
+		}
+
+		if !l._ascending && l.Compare(node.value, n) < 0 {
 			return Node[T]{value: n, next: nil, prev: nil}, errors.New("node not found")
 		}
 
@@ -113,7 +121,6 @@ func (l *OrderedList[T]) Delete(n T) {
 
 func (l *OrderedList[T]) Clear(asc bool) {
 	l._ascending = asc
-	l.count = 0
 	l.head, l.tail = nil, nil
 }
 
