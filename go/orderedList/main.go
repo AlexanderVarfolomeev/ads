@@ -1,8 +1,8 @@
 package main
 
 import (
-	"asd/orderedList/constraints"
-	"errors"
+	"constraints"
+	"os"
 )
 
 func main() {
