@@ -135,7 +135,4 @@ func (l *OrderedList[T]) Compare(v1 T, v2 T) int {
 		return +1
 	}
 	return 0
-	// -1 если v1 < v2
-	// 0 если v1 == v2
-	// +1 если v1 > v2
 }
