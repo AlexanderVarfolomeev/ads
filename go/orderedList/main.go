@@ -1,12 +1,9 @@
 package main
 
 import (
-	"asd/orderedList/constraints"
+	"constraints"
 	"errors"
 )
-
-func main() {
-}
 
 type Node[T constraints.Ordered] struct {
 	prev  *Node[T]
@@ -38,10 +35,7 @@ func (l *OrderedList[T]) Add(item T) {
 
 	n := l.head
 	for n != nil {
-		if l._ascending && l.Compare(n.value, item) >= 0 {
-			l.addToMiddle(n, &newNode)
-			return
-		} else if !l._ascending && l.Compare(n.value, item) < 0 {
+		if (l._ascending && l.Compare(n.value, item) >= 0) || (!l._ascending && l.Compare(n.value, item) < 0) {
 			l.addToMiddle(n, &newNode)
 			return
 		}
@@ -71,11 +65,7 @@ func (l *OrderedList[T]) Find(n T) (Node[T], error) {
 	node := l.head
 
 	for node != nil {
-		if l._ascending && l.Compare(node.value, n) > 0 {
-			return Node[T]{value: n, next: nil, prev: nil}, errors.New("node not found")
-		}
-
-		if !l._ascending && l.Compare(node.value, n) < 0 {
+		if (l._ascending && l.Compare(node.value, n) > 0) || (!l._ascending && l.Compare(node.value, n) < 0) {
 			return Node[T]{value: n, next: nil, prev: nil}, errors.New("node not found")
 		}
 
