@@ -245,10 +245,9 @@ func Test_Add_Desc_String(t *testing.T) {
 
 func Test_Add_WithSpaces(t *testing.T) {
 	list := &OrderedList[string]{_ascending: true}
-
+	list.Add(" cherry ")
 	list.Add(" banana ")
 	list.Add("apple")
-	list.Add(" cherry ")
 
 	firstNode := list.head
 	secondNode := firstNode.next
@@ -262,4 +261,68 @@ func Test_Add_WithSpaces(t *testing.T) {
 	assert.Equal(t, "apple", firstNode.value)
 	assert.Equal(t, " banana ", secondNode.value)
 	assert.Equal(t, " cherry ", thirdNode.value)
+}
+
+func TestOrderedList_Delete(t *testing.T) {
+	l := &OrderedList[int]{_ascending: true}
+	l.Add(5)
+	l.Add(2)
+	l.Add(4)
+
+	assert.Equal(t, 3, l.Count())
+
+	l.Delete(4)
+
+	assert.Equal(t, 2, l.Count())
+}
+
+func TestOrderedList_Add(t *testing.T) {
+	l1 := &OrderedList[int]{_ascending: false}
+	l1.Add(1)
+	l1.Add(2)
+	l1.Add(3)
+	println()
+}
+
+func TestOrderedList(t *testing.T) {
+	list := &OrderedList[int]{_ascending: true}
+
+	list.Add(5)
+
+	assert.Equal(t, 5, list.head.value)
+	assert.Equal(t, 5, list.tail.value)
+	assert.Nil(t, list.head.prev)
+	assert.Nil(t, list.head.next)
+
+	list.Add(3)
+
+	assert.Equal(t, 3, list.head.value)
+	assert.Equal(t, 5, list.tail.value)
+	assert.Nil(t, list.head.prev)
+	assert.Equal(t, list.tail, list.head.next)
+
+	list.Add(7)
+
+	assert.Equal(t, 7, list.tail.value)
+	assert.Equal(t, 5, list.tail.prev.value)
+}
+
+func TestOrderedList_(t *testing.T) {
+	l := &OrderedList[int]{
+		_ascending: true,
+	}
+
+	l.Add(5)
+	l.Add(3)
+	l.Add(7)
+	l.Add(4)
+
+	values := []int{}
+	n := l.head
+	for n != nil {
+		values = append(values, n.value)
+		n = n.next
+	}
+
+	assert.Equal(t, []int{3, 4, 5, 7}, values)
 }

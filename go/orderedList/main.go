@@ -1,8 +1,7 @@
 package main
 
 import (
-	"constraints"
-	"os"
+	"asd/orderedList/constraints"
 	"errors"
 	"strings"
 )
@@ -37,7 +36,7 @@ func (l *OrderedList[T]) Add(item T) {
 
 	n := l.head
 	for n != nil {
-		if (l._ascending && l.Compare(n.value, item) >= 0) || (!l._ascending && l.Compare(n.value, item) < 0) {
+		if (l._ascending && l.Compare(n.value, item) >= 0) || (!l._ascending && l.Compare(n.value, item) <= 0) {
 			l.addToMiddle(n, &newNode)
 			return
 		}
@@ -49,7 +48,7 @@ func (l *OrderedList[T]) Add(item T) {
 	l.tail = &newNode
 }
 
-func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) bool {
+func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) {
 	if n == l.head {
 		newNode.next = l.head
 		l.head.prev = newNode
@@ -61,7 +60,6 @@ func (l *OrderedList[T]) addToMiddle(n, newNode *Node[T]) bool {
 
 		newNode.next = n
 	}
-	return true
 }
 
 func (l *OrderedList[T]) Find(n T) (Node[T], error) {
@@ -84,7 +82,6 @@ func (l *OrderedList[T]) Find(n T) (Node[T], error) {
 
 func (l *OrderedList[T]) Delete(n T) {
 	node := l.head
-	l.count--
 
 	for node != nil {
 		if l.Compare(node.value, n) != 0 {
@@ -110,6 +107,7 @@ func (l *OrderedList[T]) Delete(n T) {
 			l.tail = nil
 		}
 
+		l.count--
 		return
 	}
 }
