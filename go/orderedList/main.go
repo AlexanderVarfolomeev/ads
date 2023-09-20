@@ -1,7 +1,8 @@
 package main
 
 import (
-	"asd/orderedList/constraints"
+	"constraints"
+	"os"
 	"errors"
 	"strings"
 )
@@ -116,6 +117,7 @@ func (l *OrderedList[T]) Delete(n T) {
 func (l *OrderedList[T]) Clear(asc bool) {
 	l._ascending = asc
 	l.head, l.tail = nil, nil
+	l.count = 0
 }
 
 func (l *OrderedList[T]) Compare(v1 T, v2 T) int {
