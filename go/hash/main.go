@@ -65,12 +65,21 @@ func (ht *HashTable) Find(value string) int {
 
 func (ht *HashTable) seek(value string) int {
 	key := ht.HashFun(value)
-
+	start := key
+	fromStart := false
 	for ht.filled[key] {
 		if ht.slots[key] == value {
 			return key
 		}
 		key = (ht.step + key) % ht.size
+
+		if key <= start {
+			fromStart = true
+		}
+
+		if fromStart && key >= start {
+			return -1
+		}
 	}
 
 	return key
