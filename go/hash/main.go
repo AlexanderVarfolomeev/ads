@@ -28,14 +28,7 @@ func (ht *HashTable) SeekSlot(value string) int {
 		return -1
 	}
 
-	key := ht.HashFun(value)
-
-	for ht.filled[key] {
-		if ht.slots[key] == value {
-			return key
-		}
-		key = (ht.step + key) % ht.size
-	}
+	key := ht.seek(value)
 	return key
 }
 
@@ -58,7 +51,8 @@ func (ht *HashTable) Put(value string) int {
 }
 
 func (ht *HashTable) Find(value string) int {
-	key := ht.SeekSlot(value)
+	key := ht.seek(value)
+
 	if key == -1 {
 		return -1
 	}
@@ -66,5 +60,18 @@ func (ht *HashTable) Find(value string) int {
 	if ht.slots[key] != value {
 		return -1
 	}
+	return key
+}
+
+func (ht *HashTable) seek(value string) int {
+	key := ht.HashFun(value)
+
+	for ht.filled[key] {
+		if ht.slots[key] == value {
+			return key
+		}
+		key = (ht.step + key) % ht.size
+	}
+
 	return key
 }
