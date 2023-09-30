@@ -1,8 +1,8 @@
 package main
 
-//import (
-//	"os"
-//)
+import (
+	"os"
+)
 
 type BloomFilter struct {
 	filter     int
