@@ -1,15 +1,15 @@
 package main
 
-func Pow(x, n float64) float64 {
-	if n == 0 {
+func Pow(n, m float64) float64 {
+	if m == 0 {
 		return 1
 	}
 
-	if n < 0 {
-		return 1. / x * Pow(x, n+1)
+	if m < 0 {
+		return 1. / n * Pow(n, m+1)
 	}
 
-	return x * Pow(x, n-1)
+	return n * Pow(n, m-1)
 }
 
 func main() {
