@@ -1,6 +1,6 @@
 package main
 
-func Pow(n, m float64) float64 {
+func Pow(n float64, m int) float64 {
 	if m == 0 {
 		return 1
 	}
