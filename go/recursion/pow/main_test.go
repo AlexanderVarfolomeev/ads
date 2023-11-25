@@ -18,6 +18,9 @@ func TestPowPositive(t *testing.T) {
 
 	res = Pow(2, 0)
 	assert.Equal(t, 1., res)
+
+	res = Pow(2, 1)
+	assert.Equal(t, 2., res)
 }
 
 func TestPowNegative(t *testing.T) {

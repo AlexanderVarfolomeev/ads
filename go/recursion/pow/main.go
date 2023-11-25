@@ -1,7 +1,7 @@
 package main
 
 func Pow(x, n float64) float64 {
-	if n == 0 || n == 1 {
+	if n == 0 {
 		return 1
 	}
 
