@@ -17,6 +17,4 @@ func allFiles(path string) []string {
 }
 
 func main() {
-	l := allFiles("/Users/a.o.varfolomeev/Downloads/")
-	println(l[0])
 }
