@@ -1,22 +1,27 @@
 package main
 
-import "errors"
+import (
+	"asd/deque"
+	"errors"
+)
 
-func SecondMax(list []int) (int, error) {
-	if len(list) < 2 {
+func SecondMax(list deque.Deque[int]) (int, error) {
+	if list.Size() < 2 {
 		return 0, errors.New("list contains less than 2 items")
 	}
-	m1 := Max(list[0], list[1])
-	m2 := Min(list[0], list[1])
+	val1, _ := list.RemoveFront()
+	val2, _ := list.RemoveFront()
+	m1 := Max(val1, val2)
+	m2 := Min(val1, val2)
 
-	return secondMax(list[2:], m1, m2), nil
+	return secondMax(list, m1, m2), nil
 }
 
-func secondMax(list []int, m1, m2 int) int {
-	if len(list) == 0 {
+func secondMax(list deque.Deque[int], m1, m2 int) int {
+	if list.Size() == 0 {
 		return m2
 	}
-	val := list[0]
+	val, _ := list.RemoveFront()
 
 	if val > m1 {
 		m2 = m1
@@ -25,7 +30,7 @@ func secondMax(list []int, m1, m2 int) int {
 		m2 = val
 	}
 
-	return secondMax(list[1:], m1, m2)
+	return secondMax(list, m1, m2)
 }
 
 func Max(a, b int) int {
