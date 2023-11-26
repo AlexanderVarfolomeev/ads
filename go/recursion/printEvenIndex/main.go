@@ -1,30 +1,22 @@
 package main
 
-import "container/list"
-
-func PrintEventIndexValue(list *list.List) {
+func PrintEventIndexValue(list []int) {
 	printEventIndexValue(list, 0)
 }
 
-func printEventIndexValue(list *list.List, index int) {
-	if list.Len() == 0 {
+func printEventIndexValue(list []int, index int) {
+	if len(list) == 0 {
 		return
 	}
 
-	value := list.Front()
 	if index%2 == 0 {
-		println(value.Value.(int))
+		println(list[0])
 	}
 
-	list.Remove(value)
-	printEventIndexValue(list, index+1)
+	printEventIndexValue(list[1:], index+1)
 }
 
 func main() {
-	l := list.New()
-	l.PushBack(1)
-	l.PushBack(2)
-	l.PushBack(5)
-	l.PushBack(54)
+	l := []int{1, 2, 5, 53, 44, 46}
 	PrintEventIndexValue(l)
 }

@@ -1,25 +1,18 @@
 package main
 
-import "container/list"
-
-func PrintEventValues(list *list.List) {
-	if list.Len() == 0 {
+func PrintEventValues(list []int) {
+	if len(list) == 0 {
 		return
 	}
 
-	val := list.Front()
-	if val.Value.(int)%2 == 0 {
-		println(val.Value.(int))
+	if list[0]%2 == 0 {
+		println(list[0])
 	}
-	list.Remove(val)
-	PrintEventValues(list)
+
+	PrintEventValues(list[1:])
 }
 
 func main() {
-	l := list.New()
-	l.PushBack(1)
-	l.PushBack(2)
-	l.PushBack(5)
-	l.PushBack(54)
+	l := []int{1, 2, 5, 53, 44, 46}
 	PrintEventValues(l)
 }
