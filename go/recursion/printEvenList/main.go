@@ -1,6 +1,6 @@
 package main
 
-func PrintEventValues(list []int) {
+func PrintEvenValues(list []int) {
 	if len(list) == 0 {
 		return
 	}
@@ -10,10 +10,10 @@ func PrintEventValues(list []int) {
 		println(val)
 	}
 
-	PrintEventValues(list[1:])
+	PrintEvenValues(list[1:])
 }
 
 func main() {
 	l := []int{1, 2, 5, 53, 44, 46}
-	PrintEventValues(l)
+	PrintEvenValues(l)
 }
