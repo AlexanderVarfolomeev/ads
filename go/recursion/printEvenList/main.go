@@ -5,8 +5,9 @@ func PrintEventValues(list []int) {
 		return
 	}
 
-	if list[0]%2 == 0 {
-		println(list[0])
+	val := list[0]
+	if val%2 == 0 {
+		println(val)
 	}
 
 	PrintEventValues(list[1:])
