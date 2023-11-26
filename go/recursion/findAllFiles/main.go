@@ -2,16 +2,12 @@ package main
 
 import "os"
 
-func AllFiles(path string) []string {
+func allFiles(path string) []string {
+	files := make([]string, 0)
 	dir, _ := os.ReadDir(path)
-	return allFiles(dir, make([]string, 0))
-}
-
-func allFiles(dir []os.DirEntry, files []string) []string {
 	for _, entry := range dir {
 		if entry.IsDir() {
-			subDir, _ := os.ReadDir(entry.Name())
-			files = append(files, allFiles(subDir, files)...)
+			files = append(files, allFiles(entry.Name())...)
 		} else {
 			files = append(files, entry.Name())
 		}
@@ -21,4 +17,6 @@ func allFiles(dir []os.DirEntry, files []string) []string {
 }
 
 func main() {
+	l := allFiles("/Users/a.o.varfolomeev/Downloads/")
+	println(l[0])
 }
