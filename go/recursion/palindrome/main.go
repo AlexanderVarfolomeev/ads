@@ -1,15 +1,19 @@
 package main
 
 func IsPalindrome(s string) bool {
-	if len(s) == 0 || len(s) == 1 {
+	return isPalindrome(s, 0, len(s)-1)
+}
+
+func isPalindrome(s string, start, end int) bool {
+	if start >= end {
 		return true
 	}
 
-	if s[0] != s[len(s)-1] {
+	if s[start] != s[end] {
 		return false
 	}
 
-	return IsPalindrome(s[1 : len(s)-1])
+	return isPalindrome(s, start+1, end-1)
 }
 
 func main() {
